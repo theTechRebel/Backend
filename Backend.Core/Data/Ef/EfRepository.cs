@@ -1,13 +1,13 @@
 ﻿using Backend.Core.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Backend.Core.Data.EntityFramework
+namespace Backend.Core.Data.Ef
 {
-    public class EntityFrameworkRepository<TEntity, TContext>
+    public class EfRepository<TEntity, TContext>
         : IEntityRepository<TEntity>
         where TEntity :
         class,
