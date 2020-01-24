@@ -8,7 +8,7 @@ namespace Backend.Services.Extensions
 {
     public static class DependencyInjectionExtension
     {
-        public static IServiceCollection AddDependency(this IServiceCollection services)
+        public static IServiceCollection AddDependencyInjection(this IServiceCollection services)
         {
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, EfUserRepository>();
