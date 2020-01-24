@@ -33,8 +33,8 @@ namespace Backend.Core.Extensions
                     },
                     License = new OpenApiLicense
                     {
-                        Name = "Use under MIT Open Licence",
-                        Url = new Uri("https://example.com/license"),
+                        Name = "MIT License",
+                        Url = new Uri("https://choosealicense.com/licenses/mit/"),
                     }
                 });
 
