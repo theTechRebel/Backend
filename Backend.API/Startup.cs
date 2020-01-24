@@ -38,7 +38,7 @@ namespace Backend.API
                 app.UseSwaggerDocumentation();
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseRouting();
             app.UseHttpsRedirection();
             app.UseCorsForApp();
             app.UseJwt();
