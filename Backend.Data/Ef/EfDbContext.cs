@@ -5,10 +5,13 @@ namespace Backend.Data.Ef
 {
     public class EfDbContext: DbContext
     {
-        public DbSet<User> Users { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public EfDbContext(DbContextOptions<EfDbContext> options) : base(options)
         {
-            optionsBuilder.UseSqlServer("server=localhost;database=Backend;trusted_connection=true;");
+        }
+        public DbSet<User> Users { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>().ToTable("User");
         }
     }
 }

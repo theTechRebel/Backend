@@ -1,7 +1,9 @@
 using Backend.Core.Extensions;
+using Backend.Data.Ef;
 using Backend.Services.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,12 +12,19 @@ namespace Backend.API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            string conn = Configuration["ConnectionStrings:DevBackEndDBContext"];
+            if (conn.Contains("%CONTENTROOTPATH%"))
+            {
+                conn = conn.Replace("%CONTENTROOTPATH%", env.ContentRootPath);
+            }
+            _connection = conn;
         }
 
         public IConfiguration Configuration { get; }
+        private string _connection;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -28,6 +37,8 @@ namespace Backend.API
             services.AddJwt(Configuration);
 
             services.AddDependencyInjection();
+            services.AddDbContext<EfDbContext>(options =>
+                options.UseSqlServer(_connection));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
