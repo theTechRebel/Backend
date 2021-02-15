@@ -15,16 +15,21 @@ namespace Backend.API
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
-            string conn = Configuration["ConnectionStrings:DevBackEndDBContext"];
-            if (conn.Contains("%CONTENTROOTPATH%"))
+            string conn = "";
+            if (env.IsDevelopment())
             {
-                conn = conn.Replace("%CONTENTROOTPATH%", env.ContentRootPath);
+                conn = Configuration["ConnectionStrings:DevBackEndDBContext"];
+                if (conn.Contains("%CONTENTROOTPATH%"))
+                {
+                    conn = conn.Replace("%CONTENTROOTPATH%", env.ContentRootPath);
+                }
             }
             _connection = conn;
+
         }
 
         public IConfiguration Configuration { get; }
-        private string _connection;
+        private readonly string _connection;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
