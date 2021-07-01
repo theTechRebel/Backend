@@ -15,7 +15,16 @@ namespace Backend.Services.Concrete
         }
         public int Add(User user)
         {
-            return _userRepo.Add(user).Id;
+            if (user != null)
+            {
+                var result = _userRepo.Get(u => u.Username == user.Username);
+                if(result == null)
+                {
+                    return _userRepo.Add(user).Id;
+
+                }
+            }
+            return 0;
         }
 
         public bool Delete(int UserId)
