@@ -22,94 +22,66 @@ namespace Backend.Tests
     public class UserServiceTests
     {
         private readonly EfDbContext _context;
+        private readonly EfUserRepository _userRepository;
+        private readonly UserService _userService;
+        
         public UserServiceTests()
         {
             var dbContext = new DbContextOptionsBuilder<EfDbContext>().UseInMemoryDatabase("TestDB");
             _context = new EfDbContext(dbContext.Options);
-            
+            _context.Database.EnsureCreated();
+            _userRepository = new EfUserRepository(_context);
+            _userService = new UserService(_userRepository);
+
         }
 
-        public class UnitTest1: IClassFixture<UserServiceTests>
+        [Fact]
+        public void Add_IfNothingSavedWhenNULLIsPassed()
         {
-            private readonly UserServiceTests _fixture;
-            private readonly EfUserRepository _userRepository;
+            //arrange
 
-            public UnitTest1(UserServiceTests fixture)
-            {
-                _fixture = fixture;
-                _fixture._context.Database.EnsureDeleted();
-                _fixture._context.Database.EnsureCreated();
-                _userRepository = new EfUserRepository(_fixture._context);
-            }
+            //act
+            var result = _userService.Add(null);
 
-
-            [Fact]
-            public void Add_IfNothingSavedWhenNULLIsPassed()
-            {
-                //arrange
-                UserService userService = new(_userRepository);
-
-                //act
-                var result = userService.Add(null);
-
-
-                //assert
-                Assert.Equal(0, result);
-            }
-
-            [Fact]
-            public void Add_IfSomethingSavedWhenValidObjectIsPassed()
-            {
-                //arrange
-                UserService userService = new(_userRepository);
-                var newUser = new User() { Password = "123", Remember = true, Username = "MrNobody1" };
-
-                //act
-                var result = userService.Add(newUser);
-
-
-                //assert
-                Assert.Equal(2, result);
-            }
-
+            //assert
+            Assert.Equal(0, result);
         }
 
-
-        public class UnitTest2 : IClassFixture<UserServiceTests>
+        [Fact]
+        public void Add_IfSomethingSavedWhenValidObjectIsPassed()
         {
-            private readonly UserServiceTests _fixture;
-            private readonly EfUserRepository _userRepository;
+            //arrange
+            var newUser = new User() { Password = "123", Remember = true, Username = "MrNobody1" };
 
-            public UnitTest2(UserServiceTests fixture)
-            {
-                _fixture = fixture;
-                _fixture._context.Database.EnsureDeleted();
-                _fixture._context.Database.EnsureCreated();
-                _userRepository = new EfUserRepository(_fixture._context);
-            }
-
-            [Fact]
-            public void Add_IfDuplicateObjectIsPassed()
-            {
-                //arrange
-                UserService userService = new(_userRepository);
-                var newUser = new User() { Password = "123", Remember = true, Username = "MrNobody" };
-                var newUser2 = new User() { Password = "123", Remember = true, Username = "MrNobody" };
-
-                //act
-                var result = userService.Add(newUser);
-                var result2 = userService.Add(newUser2);
+            //act
+            var result = _userService.Add(newUser);
 
 
-                //assert
-                Assert.Equal(1, result);
-                Assert.Equal(0, result2);
+            //assert
+            Assert.Equal(2, result);
+        }
 
-            }
+        [Fact]
+        public void Add_IfDuplicateObjectIsPassed()
+        {
+            //arrange
+            UserService userService = new(_userRepository);
+            var newUser = new User() { Password = "123", Remember = true, Username = "MrNobody" };
+            var newUser2 = new User() { Password = "123", Remember = true, Username = "MrNobody" };
 
+            //act
+            var result = userService.Add(newUser);
+            var result2 = userService.Add(newUser2);
+
+
+            //assert
+            Assert.Equal(1, result);
+            Assert.Equal(0, result2);
 
         }
-       
+
+
+
 
     }
 }
