@@ -55,6 +55,12 @@ namespace Backend.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("./v1/swagger.json", "Backend API V1"); //originally "./swagger/v1/swagger.json"
+            });
+
             app.UseCorsForApp();
             app.UseJwt();
         }
