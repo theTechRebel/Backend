@@ -1,4 +1,5 @@
-﻿using Backend.Services.Services.Interfaces;
+﻿using Backend.Services.Factory;
+using Backend.Services.Services.Interfaces;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,6 +13,11 @@ namespace Backend.Services.Services.Concrete
         public TodoListService()
         {
             _dictionary = new Dictionary<int, string>();
+            var _singleInstace = Singleton.Singleton.getInstance();
+
+            var format1 = FormatFactory.Create("1");
+            var format2 = FormatFactory.Create("16/07/223");
+            var format3 = FormatFactory.Create("Hello!");
         }
 
         public int Add(string item)

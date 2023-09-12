@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Backend.Services.Singleton
+﻿namespace Backend.Services.Singleton
 {
     //Singleton uses staic variable instance and static method getInstance()
     //instance is private

@@ -17,12 +17,12 @@ namespace Backend.Services.Factory
         {
            if( int.TryParse(data, out var output))
             {
-                return new NumberFormat() { Number = output };
+                return new NumberFormat() { Number = output, Content = data };
             }
 
            if( DateTime.TryParse(data, out var output1))
             {
-                return new DateFormat() { Date = output1 };
+                return new DateFormat() { Date = output1, Content = data };
             }
 
             return new StringFormat() { Content = data };
