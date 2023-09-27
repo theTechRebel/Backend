@@ -1,39 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using System.Text;
 
 namespace Backend.Services.Prototype
 {
     public class Shape
     {
-        public void GetShape()
+
+        public AShape GetShape() 
         {
-            var shape = new Triangle();
-            shape.Name = "Isosceles";
-            var shape2 = shape.Clone();
+            var random = new Random();
+            int randomNumber = random.Next(1, 20);
+
+            CShape shape = null;
+            if(randomNumber < 10)
+                shape = new CShape(90, 3);
+            if (randomNumber > 10)
+                shape = new CShape(360, 4);
+
+            return shape;
+        } 
+        
+    }
+
+    public interface IAShapeClone
+    {
+        public AShape Clone();
+    }
+
+    public abstract class AShape: IAShapeClone
+    {
+        public AShape(int degrees, int sides) {
+            if (degrees == 90 && sides == 3)
+                Name = "Isosceles";
+            if (degrees == 360 && sides == 4)
+                Name = "Square";
         }
+
+        public string getName() => Name;
+        public abstract AShape Clone();
+
+        protected string Name { get; set; }
     }
 
-    public interface IShape
+    public class CShape : AShape
     {
-        int hasSides();
-        int Degrees();
-        public string Name { get; set; }
-        public IShape Clone();
-    }
-
-    public class Triangle : IShape
-    {
-        private string _Name;
-        public string Name { get => _Name; set => _Name = Name; }
-
-        public int Degrees() => 90;
-
-        public int hasSides() => 3;
-        public IShape Clone()
+        public CShape(int degrees, int sides) : base(degrees, sides)
         {
-            var shape = new Triangle();
-            shape.Name = _Name;
+            this.degrees = degrees;
+            this.sides = sides;
+        }
+
+        private int degrees;
+        private int sides;
+
+        public override AShape Clone()
+        {
+            var shape = new CShape(this.sides, this.degrees);
+            shape.Name = this.Name;
             return shape;
         }
     }

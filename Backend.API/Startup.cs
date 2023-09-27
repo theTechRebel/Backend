@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Swashbuckle.Swagger;
 
 namespace Backend.API
 {
@@ -44,17 +45,16 @@ namespace Backend.API
             services.AddDependencyInjection();
             services.AddDbContext<EfDbContext>(options =>
                 options.UseSqlServer(_connection));
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseSwaggerDocumentation();
-                app.UseDeveloperExceptionPage();
-            }
 
+            app.UseSwaggerDocumentation();
+            app.UseDeveloperExceptionPage();
             app.UseCorsForApp();
             app.UseJwt();
         }

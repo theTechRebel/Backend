@@ -28,7 +28,7 @@ namespace Backend.Services.Builder
 
         public string Build()
         {
-            return this._car.ToString();
+            return $"{this._car.color} {this._car.make} {this._car.year}";
         }
     }
 }
